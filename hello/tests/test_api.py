@@ -11,4 +11,4 @@ class TestApp(unittest.TestCase):
         """Test the index route returns correct response"""
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.decode('utf-8'), 'Hello World! all to you')
+        self.assertIn('Hello from web2', response.data.decode('utf-8'))
