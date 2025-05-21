@@ -39,10 +39,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # - name: check pre-commit
-    #   run: |
-    #     pre-commit run --all-files
-
     - name: Run Tests
       run: |
         python3 -m unittest
