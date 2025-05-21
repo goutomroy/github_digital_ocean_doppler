@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: developement # Keep this enabled for proper context
+    environment: developement 
     strategy:
       max-parallel: 4
       matrix:
@@ -22,18 +22,14 @@ jobs:
     #   uses: dopplerhq/cli-action@v3 # Confirmed by you
     #   with:
     #     doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-    # --- SWITCHING TO secrets-fetch-action ---
-    - name: Fetch Doppler Secrets
-      uses: DopplerHQ/secrets-fetch-action@v1.3.0 # Use a specific version, e.g., v1.0.0 or check latest tag
-      with:
-        token: ${{ secrets.DOPPLER_TOKEN }}
-        # IMPORTANT: Input parameter names are 'project' and 'config' (NOT 'doppler-project'/'doppler-config')
-        project: ${{ secrets.DOPPLER_PROJECT }}
-        config: ${{ secrets.DOPPLER_CONFIG }}
-        # No 'doppler-debug' for this action, it's for cli-action.
-        # This action automatically exports secrets as environment variables for subsequent steps.
 
-    # --- Keep this diagnostic step to verify ---
+    - name: Fetch Doppler Secrets
+      uses: DopplerHQ/secrets-fetch-action@v1.3.0
+      with:
+        doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+        doppler-project: ${{ secrets.DOPPLER_PROJECT }}
+        doppler-config: ${{ secrets.DOPPLER_CONFIG }}
+
     - name: Verify Environment Variables After Doppler Action
       run: |
         echo "--- Environment variables after Doppler action ---"
@@ -43,7 +39,6 @@ jobs:
       shell: bash
 
     - name: start docker compose for databases
-      # This step should now find secrets in the environment
       run: docker compose up -d
       timeout-minutes: 5
 
