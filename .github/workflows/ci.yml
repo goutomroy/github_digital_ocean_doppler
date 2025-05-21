@@ -41,4 +41,5 @@ jobs:
 
     - name: Run Tests
       run: |
+        echo "REDIS_URL from env in GitHub Action: $REDIS_URL"
         python3 -m unittest
