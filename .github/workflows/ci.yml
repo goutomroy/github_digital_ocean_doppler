@@ -18,43 +18,28 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - name: Install Doppler CLI and Fetch Secrets
-    #   uses: dopplerhq/cli-action@v3 # Confirmed by you
-    #   with:
-    #     doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-
     - name: Fetch Doppler Secrets
       uses: DopplerHQ/secrets-fetch-action@v1.3.0
       id: doppler
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-        # doppler-project: ${{ secrets.DOPPLER_PROJECT }}
-        # doppler-config: ${{ secrets.DOPPLER_CONFIG }}
         inject-env-vars: true
-
-    - name: Verify Environment Variables After Doppler Action
-      run: |
-        echo "--- Environment variables after Doppler action ---"
-        # Print ALL environment variables to ensure nothing is missed by grep
-        printenv # Remove grep to see EVERYTHING that's injected by the action
-        echo "--- End Environment variables verification ---"
-      shell: bash
 
     - name: start docker compose for databases
       run: docker compose up -d
       timeout-minutes: 5
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+
     - name: Run Tests
-      run: |
-        echo "REDIS_URL from env in GitHub Action: $REDIS_URL"
-        python3 -m unittest
+      run: python3 -m unittest
