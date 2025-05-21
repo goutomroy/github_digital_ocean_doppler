@@ -30,8 +30,8 @@ jobs:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         # If your GitHub Environment name is different from your Doppler config name (e.g., 'dev'),
         # you can explicitly specify the Doppler config here:
-        doppler-config: dev
-        
+        # doppler-config: dev
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
