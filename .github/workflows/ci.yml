@@ -24,8 +24,8 @@ jobs:
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         # IMPORTANT: Input parameter names are 'project' and 'config' (NOT 'doppler-project'/'doppler-config')
-        project: ${{ secrets.DOPPLER_PROJECT }}
-        config: ${{ secrets.DOPPLER_CONFIG }}
+        doppler-project: ${{ secrets.DOPPLER_PROJECT }}
+        doppler-config: ${{ secrets.DOPPLER_CONFIG }}
         # No 'doppler-debug' for this action, it's for cli-action.
         # This action automatically exports secrets as environment variables for subsequent steps.
 
