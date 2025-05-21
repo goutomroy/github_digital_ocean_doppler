@@ -28,7 +28,7 @@ jobs:
     - name: Install Doppler CLI and Fetch Secrets
       # Consider using @v2 or @v1.2.0 for the action. @v1 is quite old.
       # uses: dopplerhq/cli-action@v2
-      uses: dopplerhq/cli-action@v1 # Sticking with v1 as per your current file, but be aware.
+      uses: dopplerhq/cli-action@v3 # Sticking with v1 as per your current file, but be aware.
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         doppler-project: ${{ secrets.DOPPLER_PROJECT }}
