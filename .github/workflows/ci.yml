@@ -39,7 +39,7 @@ jobs:
     - name: Verify Environment Variables After Doppler Action
       run: |
         echo "--- Environment variables after Doppler action ---"
-        printenv | grep -E "REDIS_URL|DATABASE_URL|API_KEY|DOPPLER_PROJECT|DOPPLER_CONFIG" # Adjust grep pattern for ALL your expected secrets
+        printenv | grep -E "REDIS_URL" # Adjust grep pattern for ALL your expected secrets
         echo "--- End Environment variables verification ---"
       shell: bash # Explicitly use bash to ensure printenv works as expected
 
