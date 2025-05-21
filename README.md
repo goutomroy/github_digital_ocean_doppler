@@ -1,6 +1,7 @@
 * install doppler CLI
 * doppler login
 * doppler run --project cognitive-demo --config dev -- docker compose up -d
+* doppler run --project cognitive-demo --config dev -- docker compose down
 
 ## best practice
 
