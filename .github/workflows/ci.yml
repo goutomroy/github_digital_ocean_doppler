@@ -9,11 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # --- IMPORTANT: Re-enable 'environment' ---
-    # While it wasn't the direct cause of the empty REDIS_URL,
-    # it's good practice for job context and permissions with Environment secrets.
-    environment: developement
-    # ----------------------------------------
+    environment: developement # Keep this enabled for proper context
     strategy:
       max-parallel: 4
       matrix:
@@ -22,28 +18,28 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # --- CRITICAL: Move Doppler action BEFORE 'docker compose up' ---
-    # The 'docker compose up' command (and your application) needs secrets
-    # BEFORE it starts. Fetch them first!
-    - name: Install Doppler CLI and Fetch Secrets
-      # Consider using @v2 or @v1.2.0 for the action. @v1 is quite old.
-      # uses: dopplerhq/cli-action@v2
-      uses: dopplerhq/cli-action@v3 # Sticking with v1 as per your current file, but be aware.
-      # with:
-      #   doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-      #   doppler-project: ${{ secrets.DOPPLER_PROJECT }}
-      #   doppler-config: ${{ secrets.DOPPLER_CONFIG }}
+    # --- SWITCHING TO secrets-fetch-action ---
+    - name: Fetch Doppler Secrets
+      uses: DopplerHQ/secrets-fetch-action@v1.0.0 # Use a specific version, e.g., v1.0.0 or check latest tag
+      with:
+        doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+        # IMPORTANT: Input parameter names are 'project' and 'config' (NOT 'doppler-project'/'doppler-config')
+        project: ${{ secrets.DOPPLER_PROJECT }}
+        config: ${{ secrets.DOPPLER_CONFIG }}
+        # No 'doppler-debug' for this action, it's for cli-action.
+        # This action automatically exports secrets as environment variables for subsequent steps.
 
-    # --- NEW DIAGNOSTIC STEP: Check environment AFTER Doppler action ---
-    # This will directly tell us if the Doppler action is setting env vars.
+    # --- Keep this diagnostic step to verify ---
     - name: Verify Environment Variables After Doppler Action
       run: |
         echo "--- Environment variables after Doppler action ---"
-        printenv | grep -E "REDIS_URL" # Adjust grep pattern for ALL your expected secrets
+        # Print ALL environment variables to ensure nothing is missed by grep
+        printenv # Remove grep to see EVERYTHING that's injected by the action
         echo "--- End Environment variables verification ---"
-      shell: bash # Explicitly use bash to ensure printenv works as expected
+      shell: bash
 
     - name: start docker compose for databases
+      # This step should now find secrets in the environment
       run: docker compose up -d
       timeout-minutes: 5
 
@@ -59,6 +55,5 @@ jobs:
 
     - name: Run Tests
       run: |
-        # This line will now show a value if the previous diagnostic step works
         echo "REDIS_URL from env in GitHub Action: $REDIS_URL"
         python3 -m unittest
