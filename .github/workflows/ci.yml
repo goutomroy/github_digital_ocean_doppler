@@ -20,7 +20,7 @@ jobs:
 
     # --- SWITCHING TO secrets-fetch-action ---
     - name: Fetch Doppler Secrets
-      uses: DopplerHQ/secrets-fetch-action@v1.0.0 # Use a specific version, e.g., v1.0.0 or check latest tag
+      uses: DopplerHQ/secrets-fetch-action@v1.3.0 # Use a specific version, e.g., v1.0.0 or check latest tag
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         # IMPORTANT: Input parameter names are 'project' and 'config' (NOT 'doppler-project'/'doppler-config')
