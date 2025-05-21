@@ -8,9 +8,12 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    # environment: developement
+    # --- IMPORTANT: Re-enable 'environment' ---
+    # While it wasn't the direct cause of the empty REDIS_URL,
+    # it's good practice for job context and permissions with Environment secrets.
+    environment: developement
+    # ----------------------------------------
     strategy:
       max-parallel: 4
       matrix:
@@ -18,16 +21,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: start docker compose for databases
-      run: docker compose up -d
-      timeout-minutes: 5
 
+    # --- CRITICAL: Move Doppler action BEFORE 'docker compose up' ---
+    # The 'docker compose up' command (and your application) needs secrets
+    # BEFORE it starts. Fetch them first!
     - name: Install Doppler CLI and Fetch Secrets
-      uses: dopplerhq/cli-action@v1
+      # Consider using @v2 or @v1.2.0 for the action. @v1 is quite old.
+      # uses: dopplerhq/cli-action@v2
+      uses: dopplerhq/cli-action@v1 # Sticking with v1 as per your current file, but be aware.
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         doppler-project: ${{ secrets.DOPPLER_PROJECT }}
         doppler-config: ${{ secrets.DOPPLER_CONFIG }}
+
+    # --- NEW DIAGNOSTIC STEP: Check environment AFTER Doppler action ---
+    # This will directly tell us if the Doppler action is setting env vars.
+    - name: Verify Environment Variables After Doppler Action
+      run: |
+        echo "--- Environment variables after Doppler action ---"
+        printenv | grep -E "REDIS_URL|DATABASE_URL|API_KEY|DOPPLER_PROJECT|DOPPLER_CONFIG" # Adjust grep pattern for ALL your expected secrets
+        echo "--- End Environment variables verification ---"
+      shell: bash # Explicitly use bash to ensure printenv works as expected
+
+    - name: start docker compose for databases
+      run: docker compose up -d
+      timeout-minutes: 5
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -41,5 +59,6 @@ jobs:
 
     - name: Run Tests
       run: |
+        # This line will now show a value if the previous diagnostic step works
         echo "REDIS_URL from env in GitHub Action: $REDIS_URL"
         python3 -m unittest
