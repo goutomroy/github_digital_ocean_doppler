@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: developement 
     strategy:
       max-parallel: 4
       matrix:
@@ -20,7 +19,6 @@ jobs:
 
     - name: Fetch Doppler Secrets
       uses: DopplerHQ/secrets-fetch-action@v1.3.0
-      id: doppler
       with:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         inject-env-vars: true
