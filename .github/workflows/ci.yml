@@ -17,7 +17,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
+    
+    - name: Install Doppler CLI and Fetch Secrets
+      uses: dopplerhq/cli-action@v3 # Confirmed by you
+      with:
+        doppler-token: ${{ secrets.DOPPLER_TOKEN }}
     # --- SWITCHING TO secrets-fetch-action ---
     - name: Fetch Doppler Secrets
       uses: DopplerHQ/secrets-fetch-action@v1.3.0 # Use a specific version, e.g., v1.0.0 or check latest tag
