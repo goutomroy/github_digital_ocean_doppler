@@ -1,4 +1,4 @@
-name: Django CI
+name: Flask CI
 
 on:
   push:
@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: developement
     strategy:
       max-parallel: 4
       matrix:
@@ -21,6 +22,16 @@ jobs:
       run: docker compose up -d
       timeout-minutes: 5
 
+    - name: Install Doppler CLI and Fetch Secrets
+      uses: dopplerhq/cli-action@v1 # Use the official Doppler CLI GitHub Action
+      with:
+        # This token is a GitHub Repository Secret (NOT an Environment Secret).
+        # It's the credential that allows the GitHub Action to talk to Doppler.
+        doppler-token: ${{ secrets.DOPPLER_TOKEN }}
+        # If your GitHub Environment name is different from your Doppler config name (e.g., 'dev'),
+        # you can explicitly specify the Doppler config here:
+        doppler-config: dev
+        
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
