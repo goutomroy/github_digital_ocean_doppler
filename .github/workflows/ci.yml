@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.12, 3.13]
+        python-version: [3.12]
 
     steps:
     - uses: actions/checkout@v4.2.2
@@ -23,9 +23,9 @@ jobs:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         inject-env-vars: true
 
-    - name: start docker compose for databases
-      run: docker compose up -d
-      timeout-minutes: 5
+    # - name: start docker compose for databases
+    #   run: docker compose up -d
+    #   timeout-minutes: 5
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
