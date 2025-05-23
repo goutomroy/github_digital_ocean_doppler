@@ -2,7 +2,7 @@
 #   Nov 2019: Update Flask to 1.1.1
 #   Apr 2022: Update Flask to 2.0.3
 Flask==2.0.3
-flask-redis==0.3
+# flask-redis==0.3
 gunicorn==20.0.4
 
 # Hello. This is Nick from the future (Apr 2022 to be exact). A few of Flask's

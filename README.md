@@ -5,3 +5,6 @@
 * doppler run --project cognitive-demo --config dev -- gunicorn -c gunicorn.py --reload "hello.app:app"
 
 * doppler run --project cognitive-demo --config dev -- python3 -m unittest
+
+docker login registry.digitalocean.com  
+registry.digitalocean.com/cognitiveadv  
