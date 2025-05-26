@@ -4,8 +4,18 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install system dependencies including Doppler CLI
-RUN apk add --no-cache gcc musl-dev python3-dev curl
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    python3-dev \
+    curl \
+    gnupg \
+    bash
+
+
+# Install Doppler CLI
 RUN curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
+
 
 # Install Python dependencies
 RUN pip install -U pip setuptools wheel ruamel.yaml.clib
