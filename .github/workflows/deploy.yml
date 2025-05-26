@@ -57,10 +57,14 @@ jobs:
           # echo "Updated content of app.yaml:"
           # cat .digitalocean/app.yaml
 
-# Kept commented out as they were in original file
-#          env: |
-#            DATABASE_URL=${{ env.DATABASE_URL }}
-#            API_KEY=${{ env.API_KEY }}
+      - name: Create App if not exists
+        run: |
+          if ! doctl apps list | grep -q "github-digital-ocean-doppler"; then
+            echo "Creating new app..."
+            doctl apps create --spec .digitalocean/app.yaml
+          else
+            echo "App already exists"
+          fi
 
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
