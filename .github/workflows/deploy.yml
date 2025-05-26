@@ -43,7 +43,7 @@ jobs:
           doctl registry repository list-tags github_digital_ocean_doppler_img
           
           # Add a small delay to ensure registry consistency
-          sleep 30
+          # sleep 30
 
       - name: Update App Platform Spec with new image tag
         env:
@@ -68,10 +68,11 @@ jobs:
 
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
         with:
           app_name: github-digital-ocean-doppler
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_spec_location: .digitalocean/app.yaml
-          create_app: true 
-          print_build_logs: true
-          print_deploy_logs: true
+          # print_build_logs: true
+          # print_deploy_logs: true
