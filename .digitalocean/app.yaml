@@ -1,19 +1,18 @@
-# .digitalocean/app.yaml
+
 name: github-digital-ocean-doppler # Replace with your desired App Platform application name
-region: fra1 # Choose your desired region (e.g., nyc3, sfo3, fra1)
+region: fra1
 
 services:
   - name: web
     image:
       registry_type: DOCR
-      # This will be updated by the GitHub Action with the correct registry, image name, and tag
-      repository: cognitiveadv/github_digital_ocean_doppler_img # e.g., my-flask-registry/my-flask-app
-      tag: ${TAG} # This 'latest' tag will be dynamically replaced by the GitHub Action
-    instance_size_slug: basic-xxs # Choose an appropriate size (e.g., basic-s, basic-m)
+      repository: cognitiveadv/github_digital_ocean_doppler_img 
+      tag: ${TAG} 
+    instance_size_slug: basic-xxs 
     instance_count: 1
     routes:
       - path: /
-    http_port: 5000 # Matches the EXPOSE port in your Dockerfile
+    http_port: 5000 
 
     # Environment variables for your application at runtime
     # If you have secrets from Doppler that your *running app* needs,
