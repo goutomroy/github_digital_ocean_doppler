@@ -66,18 +66,10 @@ jobs:
             echo "App already exists"
           fi
 
-      - name: Get App ID and Update Configuration
+      - name: Enable Auto-Deploy
         run: |
-          # Get the App ID without -q flag to output the ID
           APP_ID=$(doctl apps list --format ID --no-header | grep "github-digital-ocean-doppler")
-          if [ -n "$APP_ID" ]; then
-            echo "Found app ID: $APP_ID"
-            echo "APP_ID=${APP_ID}" >> $GITHUB_ENV
-            echo "Updating app configuration..."
-            doctl apps update $APP_ID --spec .digitalocean/app.yaml
-          else
-            echo "No app ID found"
-          fi
+          doctl apps update $APP_ID --spec .digitalocean/app.yaml
 
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
