@@ -29,18 +29,18 @@ jobs:
       - name: Build and Push Docker Image to DOCR
         env:
           IMAGE_NAME: github_digital_ocean_doppler_img
-          REGISTRY_NAME: cognitiveadv
+          REGISTRY_NAME: registry.digitalocean.com/cognitiveadv
           TAG: ${{ github.sha }}
         run: |
-          echo "Building Docker image: registry.digitalocean.com/${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
-          docker build -t registry.digitalocean.com/${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
+          echo "Building Docker image: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
+          docker build -t ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
           echo "Pushing Docker image to DOCR..."
-          docker push registry.digitalocean.com/${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+          docker push ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
           echo "Docker image pushed successfully."
           
           # Verify image exists in registry
           echo "Verifying image in registry..."
-          doctl registry repository list-tags ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}
+          doctl registry repository list-tags github_digital_ocean_doppler_img
           
           # Add a small delay to ensure registry consistency
           sleep 30
