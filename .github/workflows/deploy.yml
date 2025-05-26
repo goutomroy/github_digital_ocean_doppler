@@ -5,56 +5,14 @@ on:
     branches: [ "master" ]
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     max-parallel: 4
-  #     matrix:
-  #       python-version: [3.12]
-
-  #   steps:
-  #   - uses: actions/checkout@v4.2.2
-
-  #   - name: Fetch Doppler Secrets
-  #     uses: DopplerHQ/secrets-fetch-action@v1.3.0
-  #     with:
-  #       doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-  #       inject-env-vars: true
-
-  #   # - name: start docker compose for databases
-  #   #   run: docker compose up -d
-  #   #   timeout-minutes: 5
-
-  #   - name: Set up Python ${{ matrix.python-version }}
-  #     uses: actions/setup-python@v5
-  #     with:
-  #       python-version: ${{ matrix.python-version }}
-  #       cache: 'pip'
-
-  #   - name: Install Dependencies
-  #     run: |
-  #       python -m pip install --upgrade pip
-  #       pip install -r requirements.txt
-
-
-  #   - name: Run Tests
-  #     run: python3 -m unittest
-
-  
-
   deploy:
-    # This job will only run if the 'build' job completes successfully
-    # needs: build
     runs-on: ubuntu-latest
-    # environment: production # Good practice to define environments for deployment
+    environment: production  # Uncommented for better security practices
 
     steps:
       - uses: actions/checkout@v4.2.2
 
       - name: Fetch Doppler Secrets (for Deployment, if needed)
-        # Fetching Doppler secrets again here ensures they are available
-        # if any deployment-specific logic needs them, or if you plan
-        # to pass them as environment variables to the deploy action.
         uses: DopplerHQ/secrets-fetch-action@v1.3.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN }}
@@ -64,17 +22,14 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-        env:
-          DOCKER_REGISTRY_SERVER: registry.digitalocean.com
-          # DOCKER_REGISTRY_USERNAME: "" 
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
 
       - name: Build and Push Docker Image to DOCR
         env:
-          # Define your image and registry names here
-          IMAGE_NAME: github_digital_ocean_doppler_img # Your desired image name (e.g., flask-api)
-          REGISTRY_NAME: cognitiveadv # Your DigitalOcean Container Registry name
-          # Use the commit SHA as the image tag for unique deployments
+          IMAGE_NAME: github_digital_ocean_doppler_img
+          REGISTRY_NAME: cognitiveadv
           TAG: ${{ github.sha }}
         run: |
           echo "Building Docker image: registry.digitalocean.com/${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
@@ -84,8 +39,6 @@ jobs:
           echo "Docker image pushed successfully."
 
       - name: Update App Platform Spec with new image tag
-        # This step dynamically updates the app.yaml file with the current commit SHA as the image tag.
-        # It's crucial that your app.yaml has 'tag: latest' as a placeholder.
         env:
           TAG: ${{ github.sha }}
         run: |
@@ -96,13 +49,9 @@ jobs:
         uses: digitalocean/app_action/deploy@v2.0.9
         with:
           do_token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          app_spec_path: .digitalocean/app.yaml # Path to your app.yaml file
+          app_spec_path: .digitalocean/app.yaml
 
-          # If you need to pass environment variables from your GitHub Action
-          # (e.g., fetched by Doppler) directly to your App Platform app's runtime,
-          # you can uncomment and use the 'env' input.
-          # However, for sensitive runtime secrets, DigitalOcean's built-in secret management
-          # within the App Platform UI is generally preferred.
-          # env: |
-          #   DATABASE_URL=${{ env.DATABASE_URL }}
-          #   API_KEY=${{ env.API_KEY }}
+# Kept commented out as they were in original file
+#          env: |
+#            DATABASE_URL=${{ env.DATABASE_URL }}
+#            API_KEY=${{ env.API_KEY }}
