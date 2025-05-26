@@ -48,8 +48,10 @@ jobs:
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
         with:
-          do_token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          app_spec_path: .digitalocean/app.yaml
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          app_spec_location: .digitalocean/app.yaml
+          print_build_logs: true
+          print_deploy_logs: true
 
 # Kept commented out as they were in original file
 #          env: |
