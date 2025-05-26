@@ -66,10 +66,10 @@ jobs:
             echo "App already exists"
           fi
 
-      - name: Enable Auto-Deploy
-        run: |
-          APP_ID=$(doctl apps list --format ID --no-header | grep "github-digital-ocean-doppler")
-          doctl apps update $APP_ID --spec .digitalocean/app.yaml
+      # - name: Enable Auto-Deploy
+      #   run: |
+      #     APP_ID=$(doctl apps list --format ID --no-header | grep "github-digital-ocean-doppler")
+      #     doctl apps update $APP_ID --spec .digitalocean/app.yaml
 
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
@@ -81,9 +81,9 @@ jobs:
           app_spec_location: .digitalocean/app.yaml
           # print_build_logs: true
           # print_deploy_logs: true
-      - name: Verify Auto-Deploy Setting
-        run: |
-          if [ -n "${{ env.APP_ID }}" ]; then
-            echo "Verifying auto-deploy setting..."
-            doctl apps get ${{ env.APP_ID }} --format Spec | grep auto_deploy
-          fi
+      # - name: Verify Auto-Deploy Setting
+      #   run: |
+      #     if [ -n "${{ env.APP_ID }}" ]; then
+      #       echo "Verifying auto-deploy setting..."
+      #       doctl apps get ${{ env.APP_ID }} --format Spec | grep auto_deploy
+      #     fi
