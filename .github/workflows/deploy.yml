@@ -26,6 +26,7 @@ jobs:
       - name: Log in to Container Registry
         run: doctl registry login --expiry-seconds 1200
 
+
       - name: Build and Push Docker Image
         env:
           IMAGE_NAME: github_digital_ocean_doppler_img
@@ -33,7 +34,14 @@ jobs:
           TAG: ${{ github.sha }}
         run: |
           echo "Building image..."
+          # Build with SHA tag
           docker build -t ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
-          echo "Pushing image..."
+          # Tag the same image as latest
+          docker tag ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
+          
+          echo "Pushing images..."
+          # Push both tags
           docker push ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-          echo "Image ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} pushed successfully"
+          docker push ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
+          
+          echo "Images pushed successfully with tags: ${{ env.TAG }} and latest"
