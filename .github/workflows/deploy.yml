@@ -43,7 +43,7 @@ jobs:
           doctl registry repository list-tags github_digital_ocean_doppler_img
           
           # Add a small delay to ensure registry consistency
-          # sleep 30
+          sleep 30
 
       - name: Update App Platform Spec with new image tag
         env:
