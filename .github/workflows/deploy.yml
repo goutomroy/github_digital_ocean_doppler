@@ -68,9 +68,11 @@ jobs:
 
       - name: Deploy to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2.0.9
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
         with:
           app_name: github-digital-ocean-doppler
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_spec_location: .digitalocean/app.yaml
-          print_build_logs: true
-          print_deploy_logs: true
+          # print_build_logs: true
+          # print_deploy_logs: true

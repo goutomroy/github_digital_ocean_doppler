@@ -13,7 +13,13 @@ services:
     routes:
       - path: /
     http_port: 5000 
+    envs:
+      - key: DOPPLER_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+        value: ${DOPPLER_TOKEN}
 
+        
     # Environment variables for your application at runtime
     # If you have secrets from Doppler that your *running app* needs,
     # it's best to configure them directly in the DigitalOcean App Platform UI
