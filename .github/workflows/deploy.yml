@@ -68,12 +68,15 @@ jobs:
 
       - name: Get App ID and Update Configuration
         run: |
-          APP_ID=$(doctl apps list --format ID --no-header | grep -q "github-digital-ocean-doppler" && doctl apps list --format ID --no-header | grep "github-digital-ocean-doppler")
+          # Get the App ID without -q flag to output the ID
+          APP_ID=$(doctl apps list --format ID --no-header | grep "github-digital-ocean-doppler")
           if [ -n "$APP_ID" ]; then
             echo "Found app ID: $APP_ID"
             echo "APP_ID=${APP_ID}" >> $GITHUB_ENV
             echo "Updating app configuration..."
             doctl apps update $APP_ID --spec .digitalocean/app.yaml
+          else
+            echo "No app ID found"
           fi
 
       - name: Deploy to DigitalOcean App Platform
