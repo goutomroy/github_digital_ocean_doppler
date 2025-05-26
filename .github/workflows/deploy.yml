@@ -1,4 +1,4 @@
-name: Flask CI
+name: Deploy to DigitalOcean App Platform
 
 on:
   push:
@@ -97,7 +97,7 @@ jobs:
           echo "Updated app.yaml with image tag: ${{ env.TAG }}"
 
       - name: Deploy to DigitalOcean App Platform
-        uses: digitalocean/app_platform_deploy_action@v1.2.0
+        uses: digitalocean/app_action/deploy@v2.0.9
         with:
           do_token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_spec_path: .digitalocean/app.yaml # Path to your app.yaml file

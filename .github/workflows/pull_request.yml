@@ -1,4 +1,4 @@
-name: Flask CI
+name: Pull Request Workflow
 
 on:
   pull_request:
