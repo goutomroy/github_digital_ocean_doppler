@@ -43,21 +43,30 @@ jobs:
           doctl registry repository list-tags github_digital_ocean_doppler_img
           
           # Add a small delay to ensure registry consistency
-          sleep 30
+          sleep 10
 
       - name: Update App Platform Spec with new image tag
         env:
           TAG: ${{ github.sha }}
         run: |
-          echo "Current content of app.yaml:"
-          cat .digitalocean/app.yaml
+          # echo "Current content of app.yaml:"
+          # cat .digitalocean/app.yaml
           
           sed -i "s|\${TAG}|${{ env.TAG }}|g" .digitalocean/app.yaml
           
-          echo "Updated content of app.yaml:"
-          cat .digitalocean/app.yaml
+          # echo "Updated content of app.yaml:"
+          # cat .digitalocean/app.yaml
 
 # Kept commented out as they were in original file
 #          env: |
 #            DATABASE_URL=${{ env.DATABASE_URL }}
 #            API_KEY=${{ env.API_KEY }}
+
+      - name: Deploy to DigitalOcean App Platform
+        uses: digitalocean/app_action/deploy@v2.0.9
+        with:
+          app_name: github-digital-ocean-doppler
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          app_spec_path: .digitalocean/app.yaml
+          print_build_logs: true
+          print_deploy_logs: true
