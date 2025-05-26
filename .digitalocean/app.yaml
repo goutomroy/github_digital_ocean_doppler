@@ -1,5 +1,5 @@
 # .digitalocean/app.yaml
-name: github_digital_ocean_doppler # Replace with your desired App Platform application name
+name: github-digital-ocean-doppler # Replace with your desired App Platform application name
 region: fra1 # Choose your desired region (e.g., nyc3, sfo3, fra1)
 
 services:
