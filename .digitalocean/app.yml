@@ -1,0 +1,26 @@
+# .digitalocean/app.yaml
+name: github_digital_ocean_doppler # Replace with your desired App Platform application name
+region: fra1 # Choose your desired region (e.g., nyc3, sfo3, fra1)
+
+services:
+  - name: web
+    image:
+      registry_type: DOCR
+      # This will be updated by the GitHub Action with the correct registry, image name, and tag
+      repository: cognitiveadv/github_digital_ocean_doppler_img # e.g., my-flask-registry/my-flask-app
+      tag: latest # This 'latest' tag will be dynamically replaced by the GitHub Action
+    instance_size_slug: basic-xxs # Choose an appropriate size (e.g., basic-s, basic-m)
+    instance_count: 1
+    routes:
+      - path: /
+    http_port: 5000 # Matches the EXPOSE port in your Dockerfile
+
+    # Environment variables for your application at runtime
+    # If you have secrets from Doppler that your *running app* needs,
+    # it's best to configure them directly in the DigitalOcean App Platform UI
+    # or reference them as App Platform secrets here (e.g., value: ${DO_SECRET_NAME}).
+    # For example:
+    # environment_variables:
+    #   - key: DATABASE_URL
+    #     scope: RUN_TIME
+    #     value: ${DATABASE_URL_FROM_DO_SECRETS} # This refers to a secret defined in DO App Platform
