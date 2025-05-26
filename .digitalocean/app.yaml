@@ -18,8 +18,10 @@ services:
         scope: RUN_TIME
         type: SECRET
         value: ${DOPPLER_TOKEN}
-
         
+    auto_deploy: true
+
+
     # Environment variables for your application at runtime
     # If you have secrets from Doppler that your *running app* needs,
     # it's best to configure them directly in the DigitalOcean App Platform UI
