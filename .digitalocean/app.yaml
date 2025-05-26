@@ -6,7 +6,7 @@ services:
   - name: web
     image:
       registry_type: DOCR
-      repository: cognitiveadv/github_digital_ocean_doppler_img 
+      repository: github_digital_ocean_doppler_img 
       tag: ${TAG} 
     instance_size_slug: basic-xxs 
     instance_count: 1

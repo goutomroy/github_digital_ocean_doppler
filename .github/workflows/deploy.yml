@@ -68,5 +68,6 @@ jobs:
           app_name: github-digital-ocean-doppler
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_spec_location: .digitalocean/app.yaml
+          create_app: true 
           print_build_logs: true
           print_deploy_logs: true
