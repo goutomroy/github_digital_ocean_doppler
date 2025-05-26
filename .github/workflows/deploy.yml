@@ -70,7 +70,7 @@ jobs:
           # or an empty string if using the token directly for authentication.
           # For simplicity, we're using the DO_ACCESS_TOKEN as the password.
           DOCKER_REGISTRY_SERVER: registry.digitalocean.com
-          DOCKER_REGISTRY_USERNAME: goutom.roy@cognitiveadv.com 
+          DOCKER_REGISTRY_USERNAME: "" 
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build and Push Docker Image to DOCR
