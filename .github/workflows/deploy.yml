@@ -42,7 +42,7 @@ jobs:
         env:
           TAG: ${{ github.sha }}
         run: |
-          sed -i "s|tag: latest|tag: ${{ env.TAG }}|g" .digitalocean/app.yaml
+          sed -i "s|\${TAG}|${{ env.TAG }}|g" .digitalocean/app.yaml
           echo "Updated app.yaml with image tag: ${{ env.TAG }}"
 
       - name: Deploy to DigitalOcean App Platform
