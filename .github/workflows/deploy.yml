@@ -37,21 +37,25 @@ jobs:
           echo "Pushing Docker image to DOCR..."
           docker push registry.digitalocean.com/${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
           echo "Docker image pushed successfully."
+          
+          # Verify image exists in registry
+          echo "Verifying image in registry..."
+          doctl registry repository list-tags ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}
+          
+          # Add a small delay to ensure registry consistency
+          sleep 30
 
       - name: Update App Platform Spec with new image tag
         env:
           TAG: ${{ github.sha }}
         run: |
+          echo "Current content of app.yaml:"
+          cat .digitalocean/app.yaml
+          
           sed -i "s|\${TAG}|${{ env.TAG }}|g" .digitalocean/app.yaml
-          echo "Updated app.yaml with image tag: ${{ env.TAG }}"
-
-      - name: Deploy to DigitalOcean App Platform
-        uses: digitalocean/app_action/deploy@v2.0.9
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          app_spec_location: .digitalocean/app.yaml
-          print_build_logs: true
-          print_deploy_logs: true
+          
+          echo "Updated content of app.yaml:"
+          cat .digitalocean/app.yaml
 
 # Kept commented out as they were in original file
 #          env: |
