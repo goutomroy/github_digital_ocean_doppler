@@ -21,10 +21,6 @@ jobs:
         doppler-token: ${{ secrets.DOPPLER_TOKEN }}
         inject-env-vars: true
 
-    # - name: start docker compose for databases
-    #   run: docker compose up -d
-    #   timeout-minutes: 5
-
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5.6.0
       with:
