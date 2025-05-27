@@ -8,3 +8,12 @@
 
 docker login registry.digitalocean.com  
 registry.digitalocean.com/cognitiveadv  
+
+
+## ruff integration
+ruff check  
+ruff check src/numbers/calculate.py  
+ruff check --fix  
+ruff format  
+
+
