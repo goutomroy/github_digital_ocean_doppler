@@ -1,0 +1,84 @@
+# Black-compatible line length and Python version targeting
+line-length = 88
+target-version = "py312"
+
+# Cache and exclusion patterns for better performance
+cache-dir = ".ruff_cache"
+extend-exclude = [".git", ".venv", "venv", "dist", "*.pyc", "*.egg-info"]
+
+[lint]
+select = [
+    "E",    # pycodestyle: Style guide enforcement (PEP 8)
+    "W",    # pycodestyle: Style warnings
+    "F",    # pyflakes: Python linting errors (unused imports, variables, etc)
+    "I",    # isort: Import sorting and organization
+    "C",    # flake8-comprehensions: List/set/dict comprehension optimization
+    "B",    # flake8-bugbear: Bug detection and complexity checking
+    "UP",   # pyupgrade: Automatic Python upgrade syntax suggestions
+    "N",    # pep8-naming: PEP 8 naming conventions
+    "RUF",  # ruff-specific: Ruff-specific rules
+    "PL",   # pylint: General Python code analysis
+    "T20",  # flake8-print: Print statement checks
+    "S",    # flake8-bandit: Security issue detection
+    "A",    # flake8-builtins: Check for python built-in shadowing
+    "ICN",  # flake8-import-conventions: Import naming conventions
+    "SIM",  # flake8-simplify: Code simplification suggestions
+    "TID",  # flake8-tidy-imports: Import tidying
+    "ARG",  # flake8-unused-arguments: Unused argument detection
+    "DTZ",  # flake8-datetimez: DateTime-related checks
+    "ERA",  # eradicate: Remove commented-out code
+    "PGH",  # pygrep-hooks: Grep-based checks
+]
+
+# Rules to ignore
+ignore = [
+    "E501",    # Ignore line length (handled by formatter)
+    "PLR2004", # Ignore magic value comparison warnings
+    "S101",    # Allow assert statements (useful in tests)
+]
+
+# Auto-fix settings
+fixable = ["ALL"]
+unfixable = []
+
+[format]
+quote-style = "double"  # Use double quotes for strings
+line-ending = "auto"    # Automatically detect line endings
+indent-style = "space" # Use spaces for indentation
+skip-magic-trailing-comma = false  # Do not skip trailing commas in multi-line constructs
+
+
+[lint.isort]
+combine-as-imports = true   # Combine 'from x import y' statements
+force-single-line = true    # One import per line
+known-first-party = ["hello"]  # Our package modules
+known-third-party = ["flask", "unittest"]  # External packages
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+#lines-between-types = 0  # No blank lines between import sections
+
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]  # Allow unused imports in __init__.py
+"tests/*.py" = ["S101", "PLR2004"]  # Allow asserts and magic numbers in tests
+"conftest.py" = ["S101", "PLR2004"]  # Allow asserts and magic numbers in pytest config
+
+[lint.flake8-tidy-imports]
+ban-relative-imports = "all"  # Enforce absolute imports
+
+[lint.pyupgrade]
+keep-runtime-typing = true  # Maintain runtime type annotations
+
+[lint.pydocstyle]
+convention = "google"  # Use Google-style docstrings
+
+[lint.pylint]
+max-args = 8          # Maximum number of arguments per function
+max-statements = 50   # Maximum number of statements per function
+
+[lint.mccabe]
+max-complexity = 10   # Maximum cyclomatic complexity allowed
+
+[lint.flake8-quotes]
+docstring-quotes = "double"    # Use double quotes for docstrings
+inline-quotes = "single"       # Use single quotes for strings
+multiline-quotes = "double"    # Use double quotes for multiline strings

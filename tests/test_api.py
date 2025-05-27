@@ -1,4 +1,5 @@
 import unittest
+
 from hello.app import app
 
 
@@ -9,6 +10,6 @@ class TestApp(unittest.TestCase):
 
     def test_index_route(self):
         """Test the index route returns correct response"""
-        response = self.app.get('/')
+        response = self.app.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Hello from web2', response.data.decode('utf-8'))
+        self.assertIn("Hello from web2", response.data.decode("utf-8"))
