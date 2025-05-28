@@ -9,11 +9,24 @@ repos:
   # Ruff version.
   rev: v0.11.11
   hooks:
-      # Run the formatter.
-    - id: ruff-format
-      types_or: [ python, pyi ]
-      
-    # Run the linter.
+
+      # Run the linter.
     - id: ruff-check
       types_or: [ python, pyi ]
       args: [ --fix ]
+
+      # Run the formatter.
+    - id: ruff-format
+      types_or: [ python, pyi ]
+
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.15.0  # Use specific version
+  hooks:
+    - id: mypy
+      types_or: [ python, pyi ]
+      args: [
+        --config-file=mypy.ini,
+        --show-error-codes,
+        "."
+      ]
+      pass_filenames: false
