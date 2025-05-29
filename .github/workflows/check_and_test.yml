@@ -38,7 +38,7 @@ jobs:
         scan-type: 'fs'
         ignore-unfixed: true
         format: 'table'
-        severity: 'CRITICAL'
+        severity: 'CRITICAL,HIGH,MEDIUM'
         exit-code: 1
     - name: Run Ruff
       run: ruff check --output-format=github .
