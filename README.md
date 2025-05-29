@@ -16,4 +16,15 @@ ruff check src/numbers/calculate.py
 ruff check --fix  
 ruff format  
 
+# github branch
 
+master
+release
+dev
+feature
+
+# apps/environment in DO
+
+production
+staging
+development
