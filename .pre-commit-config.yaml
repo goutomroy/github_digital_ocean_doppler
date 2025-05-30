@@ -5,15 +5,45 @@ default_language_version:
   python: python3.12
 
 repos:
+
+- repo: https://github.com/mxab/pre-commit-trivy.git
+  rev: v0.15.0
+  hooks:
+  - id: trivyfs-docker
+    args:
+      - --skip-dirs
+      - ./tests
+      - --ignore-unfixed
+      - --severity=CRITICAL
+      - --format=table
+      - --exit-code=1
+      - --no-progress
+      # - --security-checks=vuln
+      - --quiet
+      - . 
+
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
   rev: v0.11.11
   hooks:
-      # Run the formatter.
-    - id: ruff-format
-      types_or: [ python, pyi ]
-      
-    # Run the linter.
+
+      # Run the linter.
     - id: ruff-check
       types_or: [ python, pyi ]
       args: [ --fix ]
+
+      # Run the formatter.
+    - id: ruff-format
+      types_or: [ python, pyi ]
+
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.15.0  # Use specific version
+  hooks:
+    - id: mypy
+      types_or: [ python, pyi ]
+      args: [
+        --config-file=mypy.ini,
+        --show-error-codes,
+        "."
+      ]
+      pass_filenames: false
