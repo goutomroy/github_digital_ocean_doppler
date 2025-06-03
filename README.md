@@ -6,6 +6,15 @@
 
 * doppler run --project cognitive-demo --config dev -- python3 -m unittest
 
+## docker run
+* docker build -t flask-doppler-app .
+* docker run -p 5000:5000 flask-doppler-app
+
+## without docker
+* doppler run --token dp.st.dev.KRJhixzOQaw9u9lmrdNuDQXRAtmsY66mvzww6H0VyXL --project cognitive-demo --config dev -- gunicorn -c gunicorn.py --reload "hello.app:app"
+
+
+
 docker login registry.digitalocean.com  
 registry.digitalocean.com/cognitiveadv  
 

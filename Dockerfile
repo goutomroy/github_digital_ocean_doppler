@@ -24,6 +24,7 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 ENV FLASK_APP=app.py
+ENV DOPPLER_TOKEN=dp.st.dev.KRJhixzOQaw9u9lmrdNuDQXRAtmsY66mvzww6H0VyXL
 
 COPY . .
 
