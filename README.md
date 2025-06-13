@@ -11,7 +11,7 @@
 * docker run -p 5000:5000 flask-doppler-app
 
 ## without docker
-* doppler run --token dp.st.dev.KRJhixzOQaw9u9lmrdNuDQXRAtmsY66mvzww6H0VyXL --project cognitive-demo --config dev -- gunicorn -c gunicorn.py --reload "hello.app:app"
+* doppler run --token <doppler_token> --project cognitive-demo --config dev -- gunicorn -c gunicorn.py --reload "hello.app:app"
 
 
 
