@@ -25,6 +25,7 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 ENV FLASK_APP=app.py
 
+
 COPY . .
 
 LABEL maintainer="Goutom Roy" version="1.0.0"
